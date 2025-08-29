@@ -43,7 +43,52 @@
 </head>
 <body class="bg-gray-100">
 
-    <div id="app" class="flex h-screen">
+    <!-- Auth Screen -->
+    <div id="auth-screen" class="h-screen w-screen flex items-center justify-center bg-gray-200">
+        <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+            <!-- Login Form -->
+            <div id="login-form-container">
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Welcome Back</h2>
+                <form id="login-form">
+                    <div class="mb-4">
+                        <label for="loginEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="loginEmail" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="mb-6">
+                        <label for="loginPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="loginPassword" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition">Login</button>
+                    <p class="text-center text-sm text-gray-600 mt-4">
+                        Don't have an account? <a href="#" id="show-register-form" class="text-indigo-600 hover:underline">Register here</a>
+                    </p>
+                </form>
+            </div>
+            <!-- Register Form -->
+            <div id="register-form-container" class="hidden">
+                 <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Create Account</h2>
+                <form id="register-form">
+                    <div class="mb-4">
+                        <label for="registerEmail" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="registerEmail" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="mb-6">
+                        <label for="registerPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="registerPassword" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition">Register</button>
+                     <p class="text-center text-sm text-gray-600 mt-4">
+                        Already have an account? <a href="#" id="show-login-form" class="text-indigo-600 hover:underline">Login here</a>
+                    </p>
+                </form>
+            </div>
+             <p id="auth-error" class="text-red-500 text-sm mt-4 text-center"></p>
+        </div>
+    </div>
+
+
+    <!-- Main App -->
+    <div id="app" class="flex h-screen hidden">
         <!-- Sidebar -->
         <aside id="sidebar" class="sidebar bg-gray-800 text-white flex flex-col p-4 shadow-lg">
             <div class="flex items-center mb-8">
@@ -72,8 +117,12 @@
                 </a>
             </nav>
 
-            <div class="mt-auto">
-                <button id="toggleSidebar" class="flex items-center p-2 rounded-lg text-gray-400 hover:bg-gray-700 w-full">
+            <div class="mt-auto pt-4 border-t border-gray-700">
+                <button id="logout-btn" class="flex items-center p-2 rounded-lg text-gray-400 hover:bg-gray-700 w-full">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span class="ml-4 sidebar-text sidebar-footer-text">Logout</span>
+                </button>
+                 <button id="toggleSidebar" class="flex items-center p-2 rounded-lg text-gray-400 hover:bg-gray-700 w-full mt-2">
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
                     <span class="ml-4 sidebar-text sidebar-footer-text">Collapse</span>
                 </button>
@@ -85,13 +134,13 @@
             <!-- Initial Loading Spinner -->
             <div id="initial-loader" class="flex flex-col items-center justify-center h-full">
                 <div class="loader"></div>
-                <p class="mt-4 text-gray-600">Connecting to database...</p>
+                <p class="mt-4 text-gray-600">Loading data...</p>
             </div>
             <!-- Views will be injected here -->
         </main>
     </div>
 
-    <!-- Modal for adding/editing projects -->
+    <!-- Modals (unchanged from previous version) -->
     <div id="project-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex items-center justify-center z-50">
         <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl">
             <h2 id="modal-title" class="text-2xl font-bold mb-6">New Project</h2>
@@ -129,7 +178,6 @@
         </div>
     </div>
     
-    <!-- Generic Modal for simple inputs -->
     <div id="generic-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden flex items-center justify-center z-50">
         <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
             <h2 id="generic-modal-title" class="text-2xl font-bold mb-6"></h2>
@@ -144,7 +192,6 @@
         </div>
     </div>
     
-    <!-- Custom Confirm Modal -->
     <div id="confirm-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden flex items-center justify-center z-50">
         <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-sm">
             <h2 id="confirm-modal-title" class="text-lg font-bold mb-4">Are you sure?</h2>
@@ -159,11 +206,17 @@
     <script type="module">
         // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, collection, doc, onSnapshot, addDoc, setDoc, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         document.addEventListener('DOMContentLoaded', async () => {
 
+            // --- UI ELEMENTS ---
+            const authScreen = document.getElementById('auth-screen');
+            const appScreen = document.getElementById('app');
+            const mainContent = document.getElementById('main-content');
+            const navItems = document.querySelectorAll('.nav-item');
+            
             // --- STATE MANAGEMENT ---
             let state = {
                 currentView: 'dashboard',
@@ -177,10 +230,6 @@
             };
 
             // --- FIREBASE SETUP ---
-            // =================================================================================
-            // IMPORTANT: PASTE YOUR FIREBASE CONFIGURATION OBJECT HERE
-            // Replace the placeholder values with the actual keys from your Firebase project.
-            // =================================================================================
             const firebaseConfig = {
                 apiKey: "AIzaSyBfrp8zXq-FM7uEr0ti0LakRE4h5JE7DJ8",
                 authDomain: "engitrack-system.firebaseapp.com",
@@ -191,7 +240,6 @@
                 measurementId: "G-GS5SKNC9Q9"
             };
             
-            // This is a placeholder for a specific environment variable
             const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
             let db, auth;
@@ -200,54 +248,98 @@
 
             async function initializeFirebase() {
                 try {
-                    // Check if the config has been filled out
-                    if (firebaseConfig.apiKey === "YOUR_API_KEY") {
-                        document.getElementById('main-content').innerHTML = `
-                            <div class="text-center h-full flex flex-col justify-center">
-                                <h1 class="text-2xl font-bold text-red-600 mb-4">Configuration Needed</h1>
-                                <p class="text-gray-700">Please paste your Firebase project configuration into the HTML file to connect the application to the database.</p>
-                            </div>
-                        `;
-                        return;
-                    }
                     const app = initializeApp(firebaseConfig);
                     db = getFirestore(app);
                     auth = getAuth(app);
 
                     onAuthStateChanged(auth, user => {
                         if (user) {
+                            // User is signed in
+                            authScreen.classList.add('hidden');
+                            appScreen.classList.remove('hidden');
                             state.userId = user.uid;
                             setupRealtimeListeners();
                         } else {
-                            // If __initial_auth_token is provided by the environment, use it. Otherwise, sign in anonymously.
-                            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                                signInWithCustomToken(auth, __initial_auth_token);
-                            } else {
-                                signInAnonymously(auth);
-                            }
+                            // User is signed out
+                            authScreen.classList.remove('hidden');
+                            appScreen.classList.add('hidden');
+                            state.userId = null;
+                            unsubscribeProjects();
+                            unsubscribeClients();
+                            state.projects = [];
+                            state.clients = [];
                         }
                     });
                 } catch (error) {
                     console.error("Firebase initialization failed:", error);
-                    document.getElementById('main-content').innerHTML = `<div class="text-red-500 font-bold text-center h-full flex flex-col justify-center">Error: Could not connect to the database.<br>Please ensure your Firebase configuration is correct and you have enabled anonymous authentication. <br><br> <span class="text-sm text-gray-600">Error details: ${error.message}</span></div>`;
+                    mainContent.innerHTML = `<div class="text-red-500 font-bold text-center">Error: Could not connect to the database.</div>`;
                 }
             }
+
+            // --- AUTHENTICATION LOGIC ---
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const authError = document.getElementById('auth-error');
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                authError.textContent = '';
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } catch (error) {
+                    authError.textContent = error.message;
+                }
+            });
+
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                authError.textContent = '';
+                const email = document.getElementById('registerEmail').value;
+                const password = document.getElementById('registerPassword').value;
+                try {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                } catch (error) {
+                    authError.textContent = error.message;
+                }
+            });
+            
+            document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+
+            // Auth form switching
+            const loginContainer = document.getElementById('login-form-container');
+            const registerContainer = document.getElementById('register-form-container');
+            document.getElementById('show-register-form').addEventListener('click', (e) => {
+                e.preventDefault();
+                loginContainer.classList.add('hidden');
+                registerContainer.classList.remove('hidden');
+                authError.textContent = '';
+            });
+            document.getElementById('show-login-form').addEventListener('click', (e) => {
+                e.preventDefault();
+                registerContainer.classList.add('hidden');
+                loginContainer.classList.remove('hidden');
+                authError.textContent = '';
+            });
+
             
             function setupRealtimeListeners() {
                 if (!state.userId) return;
 
-                // Unsubscribe from old listeners before creating new ones
                 unsubscribeProjects();
                 unsubscribeClients();
+                state.isLoading = true;
+                render();
                 
                 const projectsCollection = collection(db, 'artifacts', appId, 'users', state.userId, 'projects');
                 unsubscribeProjects = onSnapshot(projectsCollection, (snapshot) => {
                     state.projects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    state.isLoading = false; // Data has loaded
+                    state.isLoading = false;
                     render();
                 }, (error) => {
                     console.error("Error fetching projects:", error);
-                    mainContent.innerHTML = `<div class="text-red-500 font-bold">Error loading projects. Check Firestore rules and database setup.</div>`;
+                    mainContent.innerHTML = `<div class="text-red-500 font-bold">Error loading projects. Check Firestore rules.</div>`;
                 });
 
                 const clientsCollection = collection(db, 'artifacts', appId, 'users', state.userId, 'clients');
@@ -259,10 +351,9 @@
                 });
             }
 
+            // --- The rest of the app's rendering and logic remains largely the same ---
+            // --- From here on, the code is identical to the previous version ---
 
-            const mainContent = document.getElementById('main-content');
-            const navItems = document.querySelectorAll('.nav-item');
-            
             // --- AUTOMATED PROGRESS CALCULATION ---
             function calculateProjectProgress(project) {
                 if (!project) return 0;
@@ -327,8 +418,9 @@
 
             // --- RENDERING ---
             function render() {
+                if (!state.userId) return; // Don't render if not logged in
                 updateActiveNav();
-                mainContent.innerHTML = ''; // Clear previous content
+                mainContent.innerHTML = ''; 
 
                 if (state.isLoading) {
                     mainContent.innerHTML = `
@@ -1281,5 +1373,4 @@
     </script>
 </body>
 </html>
-
 
